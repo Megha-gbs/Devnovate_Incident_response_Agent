@@ -1,0 +1,22 @@
+{
+  "id": "payment-api-outage",
+  "name": "Payment API outage",
+  "title": "Payment API error rate > 40%",
+  "description": "Checkout is failing. payment-api is returning HTTP 503 for a large share of requests. Alert fired from the API gateway.",
+  "severity": "CRITICAL",
+  "priority": "P1",
+  "category": "availability",
+  "affected_service": "payment-api",
+  "affected_resources": [
+    "payment-api",
+    "payments-db",
+    "checkout-web"
+  ],
+  "alert": {
+    "name": "PaymentAPIHighErrorRate",
+    "message": "Payment API error rate > 40% for 5 minutes",
+    "source": "prometheus-alertmanager",
+    "severity": "CRITICAL",
+    "service": "payment-api"
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-09-28T11:30:00+00:00",
+    "service": "notifications-worker",
+    "level": "INFO",
+    "message": "deployed version 1.9.0"
+  },
+  {
+    "timestamp": "2026-09-28T11:50:00+00:00",
+    "service": "notifications-worker",
+    "level": "WARN",
+    "message": "heap usage 78%"
+  },
+  {
+    "timestamp": "2026-09-28T12:02:00+00:00",
+    "service": "notifications-worker",
+    "level": "WARN",
+    "message": "heap usage 91%"
+  },
+  {
+    "timestamp": "2026-09-28T12:08:00+00:00",
+    "service": "notifications-worker",
+    "level": "ERROR",
+    "message": "GC overhead limit approaching"
+  },
+  {
+    "timestamp": "2026-09-28T12:09:00+00:00",
+    "service": "k8s",
+    "level": "WARN",
+    "message": "memory working set near limit"
+  }
+]

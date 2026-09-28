@@ -1,0 +1,5 @@
+[
+  {"timestamp": "2026-09-28T12:04:00+00:00", "service": "payment-api", "level": "ERROR", "message": "Unable to obtain database connection", "code": "DB_POOL_TIMEOUT"},
+  {"timestamp": "2026-09-28T12:05:00+00:00", "service": "payments-db", "level": "WARN", "message": "connection slots exhausted", "active": 100, "max": 100},
+  {"timestamp": "2026-09-28T12:08:00+00:00", "service": "payment-api", "level": "ERROR", "message": "POST /v1/charges returned 503"}
+]

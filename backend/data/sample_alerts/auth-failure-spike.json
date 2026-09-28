@@ -1,0 +1,7 @@
+{
+  "name": "AuthFailureSpike",
+  "message": "401 responses 12x baseline in 5 minutes",
+  "source": "siem",
+  "severity": "HIGH",
+  "service": "auth-service"
+}

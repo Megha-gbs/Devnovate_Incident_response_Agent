@@ -1,0 +1,21 @@
+{
+  "id": "suspicious-logins",
+  "name": "Suspicious login activity",
+  "title": "Impossible travel + brute force against admin accounts",
+  "description": "Multiple admin accounts seeing failed logins from unusual geos.",
+  "severity": "CRITICAL",
+  "priority": "P1",
+  "category": "security",
+  "affected_service": "auth-service",
+  "affected_resources": [
+    "auth-service",
+    "admin-portal"
+  ],
+  "alert": {
+    "name": "SuspiciousAdminLogins",
+    "message": "Brute-force pattern against admin users from 14 IPs",
+    "source": "siem",
+    "severity": "CRITICAL",
+    "service": "auth-service"
+  }
+}

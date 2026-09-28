@@ -1,0 +1,7 @@
+{
+  "name": "WorkerMemoryLeakSuspect",
+  "message": "RSS grown 1.2GB in 45 minutes",
+  "source": "prometheus-alertmanager",
+  "severity": "HIGH",
+  "service": "notifications-worker"
+}

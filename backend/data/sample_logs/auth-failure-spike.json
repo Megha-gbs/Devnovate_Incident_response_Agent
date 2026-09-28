@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-09-28T12:05:00+00:00",
+    "service": "auth-service",
+    "level": "WARN",
+    "message": "invalid_client_secret for partner-gateway"
+  },
+  {
+    "timestamp": "2026-09-28T12:06:00+00:00",
+    "service": "auth-service",
+    "level": "ERROR",
+    "message": "JWT signature mismatch kid=legacy-2024"
+  },
+  {
+    "timestamp": "2026-09-28T12:07:00+00:00",
+    "service": "auth-service",
+    "level": "WARN",
+    "message": "401 POST /oauth/token count=840"
+  },
+  {
+    "timestamp": "2026-09-28T12:08:00+00:00",
+    "service": "secrets-manager",
+    "level": "INFO",
+    "message": "auth-service client secret rotated 8 minutes ago"
+  },
+  {
+    "timestamp": "2026-09-28T12:09:00+00:00",
+    "service": "auth-service",
+    "level": "ERROR",
+    "message": "partner-gateway still presenting previous secret"
+  }
+]

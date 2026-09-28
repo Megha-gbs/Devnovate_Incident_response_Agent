@@ -1,0 +1,21 @@
+{
+  "id": "db-connection-exhaustion",
+  "name": "Database connection exhaustion",
+  "title": "orders-api cannot acquire Postgres connections",
+  "description": "orders-api latency and errors climbing; database reports max connections reached.",
+  "severity": "HIGH",
+  "priority": "P1",
+  "category": "database",
+  "affected_service": "orders-api",
+  "affected_resources": [
+    "orders-api",
+    "orders-db"
+  ],
+  "alert": {
+    "name": "PostgresConnectionsExhausted",
+    "message": "orders-db active connections = max_connections",
+    "source": "postgres-exporter",
+    "severity": "HIGH",
+    "service": "orders-db"
+  }
+}

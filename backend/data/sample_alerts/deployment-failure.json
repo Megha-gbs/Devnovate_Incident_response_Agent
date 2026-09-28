@@ -1,0 +1,7 @@
+{
+  "name": "CanaryUnhealthy",
+  "message": "billing-api canary 1.4.0 failed readiness",
+  "source": "argocd",
+  "severity": "HIGH",
+  "service": "billing-api"
+}

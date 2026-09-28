@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-09-28T11:58:00+00:00",
+    "service": "argocd",
+    "level": "INFO",
+    "message": "started rollout billing-api 1.4.0"
+  },
+  {
+    "timestamp": "2026-09-28T12:00:00+00:00",
+    "service": "billing-api",
+    "level": "ERROR",
+    "message": "missing env STRIPE_WEBHOOK_SECRET"
+  },
+  {
+    "timestamp": "2026-09-28T12:02:00+00:00",
+    "service": "billing-api",
+    "level": "ERROR",
+    "message": "readiness failed: configuration invalid"
+  },
+  {
+    "timestamp": "2026-09-28T12:05:00+00:00",
+    "service": "argocd",
+    "level": "ERROR",
+    "message": "canary analysis failed: error-rate 0.90"
+  },
+  {
+    "timestamp": "2026-09-28T12:08:00+00:00",
+    "service": "k8s",
+    "level": "WARN",
+    "message": "rollback recommended by analysis"
+  }
+]

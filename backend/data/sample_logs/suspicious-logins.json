@@ -1,0 +1,43 @@
+[
+  {
+    "timestamp": "2026-09-28T12:00:00+00:00",
+    "service": "auth-service",
+    "level": "WARN",
+    "message": "failed login user=admin",
+    "ip": "203.0.113.44",
+    "country": "RU"
+  },
+  {
+    "timestamp": "2026-09-28T12:01:00+00:00",
+    "service": "auth-service",
+    "level": "WARN",
+    "message": "failed login user=admin",
+    "ip": "203.0.113.44"
+  },
+  {
+    "timestamp": "2026-09-28T12:02:00+00:00",
+    "service": "auth-service",
+    "level": "WARN",
+    "message": "failed login user=root-ops",
+    "ip": "198.51.100.12"
+  },
+  {
+    "timestamp": "2026-09-28T12:04:00+00:00",
+    "service": "auth-service",
+    "level": "WARN",
+    "message": "failed login user=admin",
+    "ip": "203.0.113.44"
+  },
+  {
+    "timestamp": "2026-09-28T12:06:00+00:00",
+    "service": "auth-service",
+    "level": "ERROR",
+    "message": "account lockout threshold reached user=admin"
+  },
+  {
+    "timestamp": "2026-09-28T12:08:00+00:00",
+    "service": "waf",
+    "level": "WARN",
+    "message": "rate-limit candidate ip=203.0.113.44"
+  }
+]

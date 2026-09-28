@@ -1,0 +1,20 @@
+{
+  "id": "high-cpu",
+  "name": "High CPU service",
+  "title": "search-api CPU > 95% for 10 minutes",
+  "description": "search-api is saturating CPU; p99 latency has crossed SLO.",
+  "severity": "HIGH",
+  "priority": "P2",
+  "category": "performance",
+  "affected_service": "search-api",
+  "affected_resources": [
+    "search-api"
+  ],
+  "alert": {
+    "name": "SearchAPICPUHigh",
+    "message": "CPU utilization > 95% for 10m",
+    "source": "prometheus-alertmanager",
+    "severity": "HIGH",
+    "service": "search-api"
+  }
+}

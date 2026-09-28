@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2026-09-28T12:01:00+00:00",
+    "service": "search-api",
+    "level": "WARN",
+    "message": "event loop lag 840ms"
+  },
+  {
+    "timestamp": "2026-09-28T12:04:00+00:00",
+    "service": "search-api",
+    "level": "INFO",
+    "message": "hot path: tokenize+rank taking 1.1s"
+  },
+  {
+    "timestamp": "2026-09-28T12:07:00+00:00",
+    "service": "search-api",
+    "level": "WARN",
+    "message": "CPU throttling detected"
+  },
+  {
+    "timestamp": "2026-09-28T12:09:00+00:00",
+    "service": "k8s",
+    "level": "WARN",
+    "message": "search-api pods at CPU limit"
+  }
+]
