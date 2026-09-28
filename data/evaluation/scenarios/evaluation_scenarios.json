@@ -1,0 +1,178 @@
+[
+  {
+    "id": "EVAL-01",
+    "name": "Relevant historical incident retrieval",
+    "current_incident": {
+      "service": "checkout",
+      "symptoms": [
+        "checkout requests timing out",
+        "DB connections at pool maximum",
+        "traffic spike"
+      ],
+      "recent_change": "traffic increased"
+    },
+    "expected_memory": [
+      "INC-001",
+      "INC-004"
+    ],
+    "checks": [
+      "Agent identifies DB connection exhaustion as a leading hypothesis",
+      "Cites at least one relevant historical incident",
+      "Recommends checking pool utilization/capacity before unrelated actions",
+      "Does not recommend repeating a failed restart-only approach"
+    ]
+  },
+  {
+    "id": "EVAL-02",
+    "name": "Similar symptoms, different root cause",
+    "current_incident": {
+      "service": "payments-api",
+      "symptoms": [
+        "payment requests timing out",
+        "DB connections high"
+      ],
+      "recent_change": "new deployment"
+    },
+    "expected_memory": [
+      "INC-002",
+      "INC-023"
+    ],
+    "checks": [
+      "Agent notices similarity to connection exhaustion/leak incidents",
+      "Distinguishes deployment-linked connection release regression from gradual outbound HTTP connection leak",
+      "Uses recent deployment as a differentiator",
+      "Explains uncertainty rather than claiming identical root cause"
+    ]
+  },
+  {
+    "id": "EVAL-03",
+    "name": "Avoid repeating failed resource scaling",
+    "current_incident": {
+      "service": "search",
+      "symptoms": [
+        "CPU 95%",
+        "search latency high",
+        "one wildcard query dominates"
+      ],
+      "recent_change": "new query feature"
+    },
+    "expected_memory": [
+      "INC-013"
+    ],
+    "checks": [
+      "Surfaces expensive/unbounded query pattern",
+      "Recommends identifying the query before simply scaling CPU",
+      "Explicitly avoids repeating scale-only failed attempts",
+      "Cites INC-013"
+    ]
+  },
+  {
+    "id": "EVAL-04",
+    "name": "Irrelevant memory filtering",
+    "current_incident": {
+      "service": "inventory",
+      "symptoms": [
+        "TLS verification failed",
+        "catalog service unreachable"
+      ],
+      "recent_change": "certificate expiry"
+    },
+    "expected_memory": [
+      "INC-019"
+    ],
+    "irrelevant_memories": [
+      "INC-013",
+      "INC-014"
+    ],
+    "checks": [
+      "Uses certificate/TLS memory as relevant",
+      "Does not claim CPU or memory incidents are causal",
+      "Explains why unrelated memories are low relevance"
+    ]
+  },
+  {
+    "id": "EVAL-05",
+    "name": "DNS family recognition",
+    "current_incident": {
+      "service": "checkout",
+      "symptoms": [
+        "intermittent inventory hostname resolution failure",
+        "only some pods affected"
+      ],
+      "recent_change": "service endpoint changed"
+    },
+    "expected_memory": [
+      "INC-029",
+      "INC-015",
+      "INC-016"
+    ],
+    "checks": [
+      "Recognizes DNS/resolver pattern",
+      "Considers node/pod-level resolution comparison",
+      "Distinguishes stale resolver state from CoreDNS and external-provider DNS cases",
+      "Cites relevant evidence"
+    ]
+  },
+  {
+    "id": "EVAL-06",
+    "name": "Learning after newly resolved incident",
+    "current_incident": {
+      "service": "payments-api",
+      "symptoms": [
+        "payment latency gradually increasing",
+        "HTTP client connection count rising",
+        "timeouts"
+      ],
+      "recent_change": "no deployment"
+    },
+    "expected_memory": [
+      "INC-023"
+    ],
+    "checks": [
+      "Surfaces INC-023 after it has been retained",
+      "Recommends outbound connection metrics/client leak investigation",
+      "Does not recommend only increasing timeout",
+      "Explains the connection-leak pattern"
+    ]
+  },
+  {
+    "id": "EVAL-07",
+    "name": "Brand-new pattern / no useful history",
+    "current_incident": {
+      "service": "reporting",
+      "symptoms": [
+        "reports fail only for one new file format",
+        "parser exception unknown"
+      ],
+      "recent_change": "new vendor export format"
+    },
+    "expected_memory": [],
+    "checks": [
+      "Explicitly states no highly relevant historical match",
+      "Does not invent a connection to unrelated incidents",
+      "Provides safe generic investigation steps",
+      "Does not cite an irrelevant memory as causal"
+    ]
+  },
+  {
+    "id": "EVAL-08",
+    "name": "Configuration incident and failed-attempt avoidance",
+    "current_incident": {
+      "service": "notification",
+      "symptoms": [
+        "workers crash-loop",
+        "startup says missing provider URL"
+      ],
+      "recent_change": "deployment"
+    },
+    "expected_memory": [
+      "INC-006"
+    ],
+    "checks": [
+      "Identifies missing environment variable/configuration as leading cause",
+      "Recommends comparing current vs previous environment values",
+      "Avoids memory/CPU scaling as first action",
+      "Cites INC-006"
+    ]
+  }
+]

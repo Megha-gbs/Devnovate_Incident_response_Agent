@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-023",
+  "incident": "Payment API timeout from connection leak",
+  "service": "payments-api",
+  "severity": "critical",
+  "symptoms": [
+    "payment latency gradually increased",
+    "HTTP client connection count grew",
+    "timeouts increased over several hours"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A third-party HTTP client was not closing connections on failed requests.",
+  "failed_attempts": [
+    "Restarted pods",
+    "Increased timeout",
+    "Scaled replicas"
+  ],
+  "successful_steps": [
+    "Captured connection metrics",
+    "Deployed client patch that closes failed connections",
+    "Verified connection count stabilized"
+  ],
+  "resolution": "A connection leak in the outbound HTTP client caused gradual resource exhaustion. The client patch fixed the leak.",
+  "postmortem": [
+    "Restarts were only temporary relief.",
+    "Longer timeouts increased resource retention."
+  ],
+  "tags": [
+    "connection leak",
+    "HTTP client",
+    "resource exhaustion"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-016",
+  "incident": "Auth gateway internal DNS outage",
+  "service": "auth-gateway",
+  "severity": "high",
+  "symptoms": [
+    "auth requests failed with upstream connection errors",
+    "service discovery names could not resolve",
+    "pods themselves were healthy"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A CoreDNS configuration rollout introduced an invalid upstream rule.",
+  "failed_attempts": [
+    "Restarted auth pods",
+    "Scaled auth gateway",
+    "Changed application retry count"
+  ],
+  "successful_steps": [
+    "Checked DNS resolution from inside a pod",
+    "Rolled back CoreDNS configuration",
+    "Verified service discovery"
+  ],
+  "resolution": "An invalid CoreDNS rule broke service discovery. Rolling back the DNS configuration restored authentication traffic.",
+  "postmortem": [
+    "Scaling application pods did not repair DNS.",
+    "Retry increases added latency without fixing resolution."
+  ],
+  "tags": [
+    "DNS failure",
+    "CoreDNS",
+    "service discovery"
+  ]
+}

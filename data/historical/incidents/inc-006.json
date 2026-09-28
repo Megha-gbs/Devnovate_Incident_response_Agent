@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-006",
+  "incident": "Notification service missing environment variable",
+  "service": "notification",
+  "severity": "high",
+  "symptoms": [
+    "notification workers crash-looped",
+    "startup logs reported missing API endpoint",
+    "email delivery stopped after deployment"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "The deployment omitted NOTIFICATION_PROVIDER_URL from the production environment.",
+  "failed_attempts": [
+    "Increased pod memory",
+    "Deleted and recreated pods",
+    "Changed retry count"
+  ],
+  "successful_steps": [
+    "Compared deployment environment with the previous release",
+    "Restored NOTIFICATION_PROVIDER_URL",
+    "Added startup configuration validation"
+  ],
+  "resolution": "The new deployment omitted a required environment variable. Restoring it allowed workers to start and process notifications.",
+  "postmortem": [
+    "Memory changes did not affect startup validation.",
+    "Retries could not help a process that never initialized."
+  ],
+  "tags": [
+    "missing environment variable",
+    "deployment configuration",
+    "startup failure"
+  ]
+}

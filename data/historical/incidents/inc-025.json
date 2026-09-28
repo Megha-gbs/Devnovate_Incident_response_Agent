@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-025",
+  "incident": "Third-party fraud API outage",
+  "service": "payments-api",
+  "severity": "high",
+  "symptoms": [
+    "payments requiring fraud checks time out",
+    "fraud provider returns 502",
+    "non-fraud internal endpoints are healthy"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "External fraud provider outage caused payment authorization requests to wait for downstream responses.",
+  "failed_attempts": [
+    "Scaled payments-api",
+    "Restarted payment pods",
+    "Increased downstream timeout"
+  ],
+  "successful_steps": [
+    "Confirmed provider 502s",
+    "Enabled documented degraded-mode behavior for low-risk transactions",
+    "Reduced retry amplification"
+  ],
+  "resolution": "The fraud provider was unavailable. The service used its approved degraded path and controlled retries until the provider recovered.",
+  "postmortem": [
+    "Scaling did not repair the external provider.",
+    "Longer timeouts increased request backlog."
+  ],
+  "tags": [
+    "third-party outage",
+    "502",
+    "dependency timeout"
+  ]
+}

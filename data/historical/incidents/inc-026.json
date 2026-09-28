@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-026",
+  "incident": "Search index corruption after node restart",
+  "service": "search",
+  "severity": "high",
+  "symptoms": [
+    "search results missing documents",
+    "index shard recovery loop observed",
+    "issue began after abrupt node restart"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A corrupted shard prevented normal index recovery.",
+  "failed_attempts": [
+    "Reindexed the whole cluster",
+    "Restarted all search nodes",
+    "Increased query timeout"
+  ],
+  "successful_steps": [
+    "Isolated the affected shard",
+    "Restored the shard from snapshot",
+    "Verified document counts"
+  ],
+  "resolution": "One search shard was corrupted after an abrupt node restart. Restoring only the affected shard avoided a full reindex.",
+  "postmortem": [
+    "Full cluster reindex was unnecessarily expensive.",
+    "Timeout changes did not repair the index."
+  ],
+  "tags": [
+    "index corruption",
+    "snapshot restore",
+    "search"
+  ]
+}

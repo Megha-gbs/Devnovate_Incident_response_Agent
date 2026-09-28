@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-007",
+  "incident": "Search service wrong feature flag causes empty results",
+  "service": "search",
+  "severity": "medium",
+  "symptoms": [
+    "search returned empty results for 20% of users",
+    "no database error was present",
+    "issue began immediately after flag rollout"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A ranking experiment flag selected an index alias that did not exist in production.",
+  "failed_attempts": [
+    "Reindexed the entire search cluster",
+    "Restarted search pods",
+    "Increased search timeout"
+  ],
+  "successful_steps": [
+    "Disabled the experiment flag",
+    "Verified the index alias",
+    "Added flag rollout checks"
+  ],
+  "resolution": "A feature flag selected a nonexistent search index alias. Disabling the flag restored results.",
+  "postmortem": [
+    "Full reindex was unnecessary.",
+    "Timeout tuning did not address the invalid alias."
+  ],
+  "tags": [
+    "feature flag",
+    "index alias",
+    "configuration"
+  ]
+}

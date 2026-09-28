@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-001",
+  "incident": "Checkout DB pool exhaustion during flash sale",
+  "service": "checkout",
+  "severity": "high",
+  "symptoms": [
+    "checkout requests began timing out",
+    "DB connection count reached pool maximum",
+    "API latency rose sharply after traffic increased"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "Connection pool size remained at 20 while traffic increased 3x during a flash sale.",
+  "failed_attempts": [
+    "Restarted checkout pods without changing pool configuration",
+    "Increased application CPU limits",
+    "Cleared Redis cache"
+  ],
+  "successful_steps": [
+    "Raised DB pool max to 60 after confirming DB had capacity",
+    "Reduced connection leak by upgrading the DB client version",
+    "Added pool utilization alert"
+  ],
+  "resolution": "Traffic surge exposed an undersized connection pool and a client-side connection leak. Increasing capacity and fixing the client leak restored normal checkout latency.",
+  "postmortem": [
+    "Avoid blindly restarting pods; the symptom returned.",
+    "CPU scaling did not address the exhausted DB connections."
+  ],
+  "tags": [
+    "DB connection pool exhaustion",
+    "traffic spike",
+    "connection leak"
+  ]
+}

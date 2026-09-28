@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-018",
+  "incident": "Auth tokens rejected due to clock skew",
+  "service": "auth-gateway",
+  "severity": "high",
+  "symptoms": [
+    "valid JWTs were rejected as expired",
+    "multiple auth pods showed different system times",
+    "issue appeared after node maintenance"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A subset of nodes had clock drift beyond the JWT tolerance window.",
+  "failed_attempts": [
+    "Rotated signing keys",
+    "Restarted all auth pods",
+    "Increased token lifetime"
+  ],
+  "successful_steps": [
+    "Compared node clocks",
+    "Corrected NTP synchronization",
+    "Verified token acceptance across nodes"
+  ],
+  "resolution": "Clock drift caused valid JWTs to appear expired. Restoring NTP synchronization fixed validation without changing token policy.",
+  "postmortem": [
+    "Key rotation would not fix time-based validation.",
+    "Longer token lifetime would mask the infrastructure issue."
+  ],
+  "tags": [
+    "clock skew",
+    "JWT",
+    "NTP"
+  ]
+}

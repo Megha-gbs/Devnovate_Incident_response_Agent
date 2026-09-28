@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-027",
+  "incident": "Webhook duplicate delivery after retry change",
+  "service": "payments-api",
+  "severity": "medium",
+  "symptoms": [
+    "merchant systems received duplicate payment webhooks",
+    "duplicates began after retry configuration change",
+    "payment records themselves were correct"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "Webhook retry policy was changed without preserving idempotency keys across retries.",
+  "failed_attempts": [
+    "Disabled all webhooks",
+    "Restarted workers",
+    "Increased delivery timeout"
+  ],
+  "successful_steps": [
+    "Restored idempotency-key propagation",
+    "Deduplicated queued events",
+    "Added duplicate-delivery test"
+  ],
+  "resolution": "A retry configuration change dropped idempotency keys, allowing duplicate webhook delivery. Restoring the key propagation fixed duplicates.",
+  "postmortem": [
+    "Restarting workers did not change event identity.",
+    "Longer timeout did not address duplicate semantics."
+  ],
+  "tags": [
+    "webhook retry",
+    "idempotency",
+    "configuration"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-022",
+  "incident": "Redis cache outage increases database load",
+  "service": "checkout",
+  "severity": "high",
+  "symptoms": [
+    "cache hit rate dropped to near zero",
+    "database QPS doubled",
+    "checkout latency increased"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A Redis cluster failover left several cache shards unavailable.",
+  "failed_attempts": [
+    "Scaled checkout pods",
+    "Increased DB connection pool",
+    "Restarted checkout"
+  ],
+  "successful_steps": [
+    "Confirmed Redis errors and cache miss increase",
+    "Restored Redis shard availability",
+    "Added cache degradation circuit behavior"
+  ],
+  "resolution": "Redis shard unavailability caused a cache miss storm and increased database load. Restoring Redis reduced DB pressure.",
+  "postmortem": [
+    "Increasing DB pool could have worsened DB saturation.",
+    "Application restarts did not restore Redis."
+  ],
+  "tags": [
+    "Redis failure",
+    "cache miss storm",
+    "database load"
+  ]
+}

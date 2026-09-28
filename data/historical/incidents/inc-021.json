@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-021",
+  "incident": "Kubernetes pod crash from invalid liveness probe",
+  "service": "notification",
+  "severity": "medium",
+  "symptoms": [
+    "pods repeatedly restarted",
+    "application health endpoint returned 200 when called manually",
+    "Kubernetes events showed failed liveness probes"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "The deployment used the wrong liveness probe path after a route rename.",
+  "failed_attempts": [
+    "Increased failure threshold",
+    "Added more replicas",
+    "Raised pod CPU limit"
+  ],
+  "successful_steps": [
+    "Compared probe path with application routes",
+    "Corrected the liveness path",
+    "Rolled out one pod first"
+  ],
+  "resolution": "Kubernetes restarted healthy notification pods because the liveness probe targeted a removed route. Correcting the probe fixed the restarts.",
+  "postmortem": [
+    "Resource changes did not affect the probe failure.",
+    "More replicas would have multiplied unnecessary restarts."
+  ],
+  "tags": [
+    "Kubernetes",
+    "liveness probe",
+    "deployment"
+  ]
+}

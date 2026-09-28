@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-014",
+  "incident": "Reporting worker memory growth",
+  "service": "reporting",
+  "severity": "medium",
+  "symptoms": [
+    "reporting workers consumed increasing memory",
+    "jobs slowed over time",
+    "workers eventually restarted"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A CSV export library retained generated rows until the whole job completed.",
+  "failed_attempts": [
+    "Increased worker memory",
+    "Reduced job timeout",
+    "Added more workers"
+  ],
+  "successful_steps": [
+    "Changed export implementation to stream rows",
+    "Restarted workers after deployment",
+    "Added memory-per-job monitoring"
+  ],
+  "resolution": "The export implementation accumulated the entire dataset in memory. Streaming rows removed the growth pattern.",
+  "postmortem": [
+    "More memory delayed failure.",
+    "Timeout changes did not reduce memory use."
+  ],
+  "tags": [
+    "memory growth",
+    "batch job",
+    "resource exhaustion"
+  ]
+}

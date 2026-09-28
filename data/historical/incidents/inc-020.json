@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-020",
+  "incident": "Database migration blocks startup",
+  "service": "user-service",
+  "severity": "critical",
+  "symptoms": [
+    "new pods fail startup health checks",
+    "migration lock remains held",
+    "old version pods continue serving"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A migration attempted to alter a large table synchronously during application startup.",
+  "failed_attempts": [
+    "Restarted failed pods",
+    "Scaled the deployment",
+    "Increased startup timeout"
+  ],
+  "successful_steps": [
+    "Stopped the migration job",
+    "Released the lock",
+    "Ran the migration using an online procedure"
+  ],
+  "resolution": "A blocking schema migration prevented new application instances from becoming ready. The migration was rerun safely outside startup.",
+  "postmortem": [
+    "Scaling created more blocked pods.",
+    "Startup timeout only prolonged rollout time."
+  ],
+  "tags": [
+    "migration failure",
+    "startup",
+    "database lock"
+  ]
+}
