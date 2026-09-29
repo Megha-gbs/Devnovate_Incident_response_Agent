@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-030",
+  "incident": "Authentication service unavailable after secret format change",
+  "service": "auth-gateway",
+  "severity": "critical",
+  "symptoms": [
+    "auth pods start but reject all tokens",
+    "secret parsing warnings appear",
+    "issue began immediately after secret rotation"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "The signing secret was stored in a new encoded format but the application expected the previous representation.",
+  "failed_attempts": [
+    "Rotated the secret again",
+    "Restarted all pods",
+    "Increased JWT tolerance"
+  ],
+  "successful_steps": [
+    "Compared secret format between releases",
+    "Restored compatible secret representation",
+    "Added secret-format compatibility test"
+  ],
+  "resolution": "A secret format change made the authentication service interpret the signing key incorrectly. Restoring the expected representation recovered token validation.",
+  "postmortem": [
+    "Another rotation would reproduce the same incompatible format.",
+    "Restarting pods only reloaded the incompatible secret."
+  ],
+  "tags": [
+    "secret format",
+    "JWT",
+    "configuration"
+  ]
+}

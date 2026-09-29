@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-013",
+  "incident": "Search CPU spike from unbounded query",
+  "service": "search",
+  "severity": "high",
+  "symptoms": [
+    "search CPU reached 95%",
+    "latency increased",
+    "one query pattern dominated CPU profiles"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A newly enabled query allowed an expensive unbounded wildcard search.",
+  "failed_attempts": [
+    "Increased CPU limits",
+    "Restarted search pods",
+    "Scaled replicas"
+  ],
+  "successful_steps": [
+    "Disabled the offending query pattern",
+    "Added query cost limits",
+    "Added CPU alert tied to query rate"
+  ],
+  "resolution": "An unbounded wildcard query saturated search CPU. Restricting the query and adding cost controls restored latency.",
+  "postmortem": [
+    "Scaling delayed saturation but did not remove the expensive query.",
+    "CPU limit changes only postponed the problem."
+  ],
+  "tags": [
+    "CPU spike",
+    "expensive query",
+    "resource exhaustion"
+  ]
+}

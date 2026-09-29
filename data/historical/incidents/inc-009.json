@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-009",
+  "incident": "Checkout payment provider timeout cascade",
+  "service": "checkout",
+  "severity": "critical",
+  "symptoms": [
+    "checkout latency exceeded 10 seconds",
+    "payment provider calls timed out",
+    "checkout pods accumulated waiting requests"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "The external payment provider experienced elevated latency and checkout had an overly long upstream timeout.",
+  "failed_attempts": [
+    "Scaled checkout pods",
+    "Increased application timeout",
+    "Restarted checkout pods"
+  ],
+  "successful_steps": [
+    "Reduced provider timeout to 3 seconds",
+    "Enabled graceful fallback for payment status",
+    "Confirmed provider recovery"
+  ],
+  "resolution": "A third-party payment provider was slow. Long upstream timeouts caused request pileups; a shorter timeout and fallback prevented the cascade.",
+  "postmortem": [
+    "Scaling pods increased concurrent waiting requests.",
+    "Longer timeouts worsened request accumulation."
+  ],
+  "tags": [
+    "third-party timeout",
+    "cascade",
+    "upstream latency"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-017",
+  "incident": "Expired TLS certificate on payment provider",
+  "service": "payments-api",
+  "severity": "critical",
+  "symptoms": [
+    "TLS handshake failures began at midnight",
+    "payment provider hostname was reachable",
+    "certificate validation failed"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "The client trust path encountered an expired provider certificate that had not been renewed.",
+  "failed_attempts": [
+    "Restarted payment service",
+    "Changed HTTP timeout",
+    "Rotated API key"
+  ],
+  "successful_steps": [
+    "Verified certificate expiry",
+    "Escalated to provider and switched to the documented fallback endpoint",
+    "Added certificate expiry monitoring"
+  ],
+  "resolution": "The payment provider certificate expired. The application was healthy; certificate validation blocked connections until the provider renewed the certificate/fallback was used.",
+  "postmortem": [
+    "Restarting did not change certificate validity.",
+    "API key rotation was unrelated to TLS validation."
+  ],
+  "tags": [
+    "expired certificate",
+    "TLS",
+    "authentication"
+  ]
+}

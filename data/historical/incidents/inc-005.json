@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-005",
+  "incident": "Checkout feature flag points to missing payment route",
+  "service": "checkout",
+  "severity": "high",
+  "symptoms": [
+    "checkout returned 404 after deployment",
+    "only users in the new checkout cohort were affected",
+    "application logs showed missing route errors"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A feature flag enabled a new payment route before the route was deployed to production.",
+  "failed_attempts": [
+    "Rolled back the entire application",
+    "Cleared CDN cache",
+    "Restarted checkout pods"
+  ],
+  "successful_steps": [
+    "Disabled the feature flag",
+    "Verified route availability",
+    "Added flag-to-route deployment validation"
+  ],
+  "resolution": "A feature flag activated functionality before its backend route existed. Disabling the flag restored checkout without a full rollback.",
+  "postmortem": [
+    "Pod restarts did not create the missing route.",
+    "CDN clearing was unrelated to the backend 404."
+  ],
+  "tags": [
+    "feature flag",
+    "configuration error",
+    "missing route"
+  ]
+}

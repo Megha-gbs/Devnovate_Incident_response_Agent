@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-011",
+  "incident": "Notification provider outage",
+  "service": "notification",
+  "severity": "high",
+  "symptoms": [
+    "email sends failed",
+    "provider API returned 503",
+    "internal notification queue grew"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "Third-party email provider had an external service outage.",
+  "failed_attempts": [
+    "Restarted notification workers",
+    "Rotated API credentials",
+    "Increased worker replicas"
+  ],
+  "successful_steps": [
+    "Confirmed provider status and 503 response pattern",
+    "Paused noncritical retries",
+    "Resumed delivery after provider recovery"
+  ],
+  "resolution": "The incident was caused by an external email provider outage. Internal restarts could not restore the provider; controlled retry behavior prevented queue amplification.",
+  "postmortem": [
+    "Credential rotation did not change provider 503s.",
+    "More workers increased retry pressure."
+  ],
+  "tags": [
+    "third-party outage",
+    "503",
+    "dependency failure"
+  ]
+}

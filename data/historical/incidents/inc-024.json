@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-024",
+  "incident": "Bad deployment config disables inventory writes",
+  "service": "inventory",
+  "severity": "high",
+  "symptoms": [
+    "inventory reads succeed",
+    "stock updates fail with 500",
+    "logs show database write mode disabled"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A deployment config set INVENTORY_WRITE_ENABLED=false in production.",
+  "failed_attempts": [
+    "Restarted inventory pods",
+    "Cleared cache",
+    "Increased database capacity"
+  ],
+  "successful_steps": [
+    "Compared environment configuration",
+    "Restored INVENTORY_WRITE_ENABLED=true",
+    "Added production config validation"
+  ],
+  "resolution": "A deployment configuration accidentally disabled inventory writes. Restoring the flag recovered stock updates.",
+  "postmortem": [
+    "Database capacity was healthy.",
+    "Restarting pods did not change the environment value."
+  ],
+  "tags": [
+    "deployment config",
+    "feature flag",
+    "write failure"
+  ]
+}

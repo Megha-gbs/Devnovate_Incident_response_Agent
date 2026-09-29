@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-003",
+  "incident": "User service connection pool exhausted",
+  "service": "user-service",
+  "severity": "high",
+  "symptoms": [
+    "login/profile requests returned 500s",
+    "connection pool wait time increased",
+    "database CPU remained moderate"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "The service used a pool size of 10 after a configuration change, below the normal production value of 40.",
+  "failed_attempts": [
+    "Increased pod replicas",
+    "Cleared application cache",
+    "Restarted one pod"
+  ],
+  "successful_steps": [
+    "Restored pool size to 40",
+    "Confirmed pool wait time returned to baseline",
+    "Added configuration validation at startup"
+  ],
+  "resolution": "A configuration change reduced the database connection pool from 40 to 10. Restoring the expected pool size resolved the failures.",
+  "postmortem": [
+    "Adding replicas did not solve the per-process pool limit.",
+    "Cache clearing had no effect on DB connection waits."
+  ],
+  "tags": [
+    "DB connection exhaustion",
+    "config error",
+    "pool size"
+  ]
+}

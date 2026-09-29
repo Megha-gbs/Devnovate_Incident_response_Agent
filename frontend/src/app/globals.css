@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    background-color: #070a12;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: #070a12;
+    color: #e2e8f0;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  pre, code, kbd, samp {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+  }
+
+  pre {
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  :focus-visible {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #080c16;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e2d4d;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2d426d;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: #f8fafc;
+    letter-spacing: -0.015em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  /* Midnight Operations Card System */
+  .ops-card {
+    background: linear-gradient(180deg, rgba(14, 22, 41, 0.95) 0%, rgba(10, 15, 29, 0.95) 100%);
+    border: 1px solid #1e2d4d;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px -2px rgba(2, 6, 23, 0.7);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ops-card-hover:hover {
+    border-color: #2d426d;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -4px rgba(2, 6, 23, 0.8), 0 0 15px -3px rgba(99, 102, 241, 0.15);
+  }
+
+  .ops-card-elevated {
+    background: linear-gradient(180deg, #141f38 0%, #0e1629 100%);
+    border: 1px solid #283a5e;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px -5px rgba(2, 6, 23, 0.8);
+  }
+
+  .ops-card-glass {
+    background: rgba(14, 22, 41, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(45, 66, 109, 0.4);
+    border-radius: 10px;
+  }
+
+  /* Section divider label */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  /* Glowing borders & accents */
+  .glow-indigo {
+    box-shadow: 0 0 20px -3px rgba(99, 102, 241, 0.35);
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.35);
+  }
+
+  .glow-critical {
+    box-shadow: 0 0 20px -3px rgba(239, 68, 68, 0.35);
+  }
+
+  /* Operational radar / scanning animation */
+  .radar-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .radar-sweep::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.25), transparent);
+    animation: radar-sweep-anim 2.2s infinite;
+  }
+
+  @keyframes radar-sweep-anim {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(200%); }
+  }
+
+  /* Pulse dots */
+  .ops-pulse-dot {
+    position: relative;
+  }
+  .ops-pulse-dot::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Shimmer */
+  .skeleton {
+    background: linear-gradient(90deg, #10192e 25%, #182442 50%, #10192e 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    border-radius: 6px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Terminal log styling */
+  .terminal-box {
+    background-color: #060911;
+    border: 1px solid #1a2742;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
+  }
+
+  /* Form inputs */
+  .ops-input {
+    width: 100%;
+    background-color: #0d1527;
+    border: 1px solid #1e2d4d;
+    color: #f1f5f9;
+    border-radius: 8px;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
+  }
+  .ops-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    background-color: #101b33;
+  }
+  .ops-input::placeholder {
+    color: #475569;
+  }
+  .ops-input-error {
+    border-color: #ef4444 !important;
+  }
+  .ops-input-error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+  }
+
+  /* Action Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(180deg, #5b52f6 0%, #4338ca 100%);
+    border: 1px solid rgba(165, 180, 252, 0.25);
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.5625rem 1rem;
+    box-shadow: 0 2px 10px rgba(79, 70, 229, 0.35);
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: linear-gradient(180deg, #6860fa 0%, #4f46e5 100%);
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.5);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #10192e;
+    border: 1px solid #1e2d4d;
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0.5625rem 1rem;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #16223d;
+    border-color: #2d426d;
+    color: #ffffff;
+  }
+  .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

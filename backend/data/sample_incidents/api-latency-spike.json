@@ -1,0 +1,21 @@
+{
+  "id": "api-latency-spike",
+  "name": "API latency spike",
+  "title": "catalog-api p99 > 2s",
+  "description": "catalog-api latency SLO burn. Cache miss ratio also high.",
+  "severity": "MEDIUM",
+  "priority": "P2",
+  "category": "performance",
+  "affected_service": "catalog-api",
+  "affected_resources": [
+    "catalog-api",
+    "redis-cache"
+  ],
+  "alert": {
+    "name": "CatalogLatencySLO",
+    "message": "p99 latency 2.4s (budget 400ms)",
+    "source": "prometheus-alertmanager",
+    "severity": "MEDIUM",
+    "service": "catalog-api"
+  }
+}

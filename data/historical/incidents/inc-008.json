@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-008",
+  "incident": "Auth gateway missing JWT issuer variable",
+  "service": "auth-gateway",
+  "severity": "critical",
+  "symptoms": [
+    "all authenticated requests returned 401",
+    "gateway startup succeeded",
+    "JWT validation logs showed issuer mismatch"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "JWT_ISSUER was changed in the deployment template but the corresponding production value was not updated.",
+  "failed_attempts": [
+    "Rotated all user passwords",
+    "Restarted gateway pods",
+    "Increased token TTL"
+  ],
+  "successful_steps": [
+    "Compared current and previous deployment environment values",
+    "Restored the correct issuer",
+    "Added configuration drift detection"
+  ],
+  "resolution": "A deployment configuration mismatch caused valid tokens to fail issuer validation. Restoring the expected issuer resolved authentication.",
+  "postmortem": [
+    "Password rotation did not address token validation.",
+    "Restarting pods loaded the same incorrect value."
+  ],
+  "tags": [
+    "JWT issuer",
+    "environment variable",
+    "config drift"
+  ]
+}

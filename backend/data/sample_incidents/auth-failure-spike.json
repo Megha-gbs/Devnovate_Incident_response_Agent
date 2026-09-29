@@ -1,0 +1,21 @@
+{
+  "id": "auth-failure-spike",
+  "name": "Authentication failure spike",
+  "title": "auth-service 401 rate 12x baseline",
+  "description": "Login failures spiked; could be bad deploy, expired cert, or credential stuffing.",
+  "severity": "HIGH",
+  "priority": "P1",
+  "category": "security",
+  "affected_service": "auth-service",
+  "affected_resources": [
+    "auth-service",
+    "login-web"
+  ],
+  "alert": {
+    "name": "AuthFailureSpike",
+    "message": "401 responses 12x baseline in 5 minutes",
+    "source": "siem",
+    "severity": "HIGH",
+    "service": "auth-service"
+  }
+}

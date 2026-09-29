@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-002",
+  "incident": "Payments API database connection saturation",
+  "service": "payments-api",
+  "severity": "critical",
+  "symptoms": [
+    "payment requests timed out",
+    "active DB connections stayed at 100%",
+    "new requests queued behind existing connections"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A deployment changed transaction handling and connections were not released on one error path.",
+  "failed_attempts": [
+    "Scaled payments-api horizontally",
+    "Restarted the database",
+    "Raised request timeout"
+  ],
+  "successful_steps": [
+    "Rolled back the deployment",
+    "Verified connections were released after rollback",
+    "Added connection leak test coverage"
+  ],
+  "resolution": "A recent deployment introduced a connection-release regression. Rollback immediately reduced active connections and restored payment processing.",
+  "postmortem": [
+    "Horizontal scaling increased total connection pressure.",
+    "Database restart was avoided after rollback proved sufficient."
+  ],
+  "tags": [
+    "DB connection exhaustion",
+    "bad deployment",
+    "connection leak"
+  ]
+}

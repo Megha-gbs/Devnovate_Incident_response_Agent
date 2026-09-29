@@ -1,0 +1,7 @@
+{
+  "name": "PaymentAPIHighErrorRate",
+  "message": "Payment API error rate > 40% for 5 minutes",
+  "source": "prometheus-alertmanager",
+  "severity": "CRITICAL",
+  "service": "payment-api"
+}

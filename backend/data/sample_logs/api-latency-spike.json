@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2026-09-28T12:03:00+00:00",
+    "service": "catalog-api",
+    "level": "WARN",
+    "message": "cache miss ratio 0.81"
+  },
+  {
+    "timestamp": "2026-09-28T12:05:00+00:00",
+    "service": "redis-cache",
+    "level": "WARN",
+    "message": "evicted 1800 keys/min maxmemory-policy allkeys-lru"
+  },
+  {
+    "timestamp": "2026-09-28T12:07:00+00:00",
+    "service": "catalog-api",
+    "level": "INFO",
+    "message": "falling back to catalog-db for /products"
+  },
+  {
+    "timestamp": "2026-09-28T12:09:00+00:00",
+    "service": "catalog-db",
+    "level": "WARN",
+    "message": "slow query 1.6s SELECT products"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "name": "SuspiciousAdminLogins",
+  "message": "Brute-force pattern against admin users from 14 IPs",
+  "source": "siem",
+  "severity": "CRITICAL",
+  "service": "auth-service"
+}

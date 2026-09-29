@@ -1,0 +1,7 @@
+{
+  "name": "PostgresConnectionsExhausted",
+  "message": "orders-db active connections = max_connections",
+  "source": "postgres-exporter",
+  "severity": "HIGH",
+  "service": "orders-db"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "deployment-failure",
+  "name": "Deployment failure",
+  "title": "billing-api 1.4.0 rollout failing health checks",
+  "description": "Canary pods for billing-api 1.4.0 never became ready. Error rate on canary is 90%.",
+  "severity": "HIGH",
+  "priority": "P1",
+  "category": "change-failure",
+  "affected_service": "billing-api",
+  "affected_resources": [
+    "billing-api"
+  ],
+  "alert": {
+    "name": "CanaryUnhealthy",
+    "message": "billing-api canary 1.4.0 failed readiness",
+    "source": "argocd",
+    "severity": "HIGH",
+    "service": "billing-api"
+  }
+}

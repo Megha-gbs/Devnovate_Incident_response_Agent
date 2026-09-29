@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-010",
+  "incident": "Inventory API slow causes checkout timeouts",
+  "service": "checkout",
+  "severity": "high",
+  "symptoms": [
+    "checkout failures correlated with inventory calls",
+    "inventory p95 latency increased",
+    "database latency was normal"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "Inventory API experienced a slow query after a data growth threshold.",
+  "failed_attempts": [
+    "Increased checkout timeout",
+    "Restarted checkout",
+    "Scaled checkout pods"
+  ],
+  "successful_steps": [
+    "Confirmed inventory latency independently",
+    "Applied the optimized inventory query",
+    "Reduced checkout dependency timeout"
+  ],
+  "resolution": "Checkout was healthy; its dependency on inventory was slow because of a query regression. Fixing the dependency query removed checkout timeouts.",
+  "postmortem": [
+    "Checkout scaling did not reduce dependency latency.",
+    "Increasing the timeout delayed failures."
+  ],
+  "tags": [
+    "dependency timeout",
+    "slow query",
+    "cascade"
+  ]
+}

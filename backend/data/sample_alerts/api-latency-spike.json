@@ -1,0 +1,7 @@
+{
+  "name": "CatalogLatencySLO",
+  "message": "p99 latency 2.4s (budget 400ms)",
+  "source": "prometheus-alertmanager",
+  "severity": "MEDIUM",
+  "service": "catalog-api"
+}

@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-028",
+  "incident": "Reporting database replica lag",
+  "service": "reporting",
+  "severity": "medium",
+  "symptoms": [
+    "reports show stale data",
+    "primary database is healthy",
+    "replica replication lag increased sharply"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A long-running analytical query on the read replica consumed resources and delayed replication.",
+  "failed_attempts": [
+    "Restarted reporting service",
+    "Cleared application cache",
+    "Increased report timeout"
+  ],
+  "successful_steps": [
+    "Identified the long-running replica query",
+    "Cancelled the offending query",
+    "Added replica-lag alerting"
+  ],
+  "resolution": "Replica lag was caused by a resource-heavy analytical query. Removing the query restored replication freshness.",
+  "postmortem": [
+    "Application restart did not affect replica workload.",
+    "Timeout changes could not reduce replica lag."
+  ],
+  "tags": [
+    "replica lag",
+    "database",
+    "long-running query"
+  ]
+}

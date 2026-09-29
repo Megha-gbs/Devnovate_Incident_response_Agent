@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-015",
+  "incident": "Payment DNS resolution failures",
+  "service": "payments-api",
+  "severity": "critical",
+  "symptoms": [
+    "payment provider hostname intermittently failed to resolve",
+    "application logs showed DNS lookup errors",
+    "internal services remained healthy"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A DNS resolver configuration change introduced intermittent resolution failures for the payment provider domain.",
+  "failed_attempts": [
+    "Restarted payment pods",
+    "Rotated payment credentials",
+    "Increased HTTP timeout"
+  ],
+  "successful_steps": [
+    "Compared resolver configuration with baseline",
+    "Reverted DNS configuration",
+    "Added external DNS resolution checks"
+  ],
+  "resolution": "An infrastructure DNS configuration change caused intermittent external hostname resolution failures. Reverting it restored payment traffic.",
+  "postmortem": [
+    "Application restarts could not fix resolver configuration.",
+    "HTTP timeout did not affect failed name resolution."
+  ],
+  "tags": [
+    "DNS failure",
+    "network",
+    "external dependency"
+  ]
+}

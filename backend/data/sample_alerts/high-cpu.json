@@ -1,0 +1,7 @@
+{
+  "name": "SearchAPICPUHigh",
+  "message": "CPU utilization > 95% for 10m",
+  "source": "prometheus-alertmanager",
+  "severity": "HIGH",
+  "service": "search-api"
+}

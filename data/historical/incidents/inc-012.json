@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-012",
+  "incident": "User service memory leak after release",
+  "service": "user-service",
+  "severity": "high",
+  "symptoms": [
+    "memory usage climbed steadily",
+    "pods were OOM-killed",
+    "issue began after a release"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A new profile serialization path retained large objects in memory.",
+  "failed_attempts": [
+    "Increased pod memory limit",
+    "Added more replicas",
+    "Cleared Redis"
+  ],
+  "successful_steps": [
+    "Rolled back the release",
+    "Verified memory stabilized",
+    "Created heap profiling regression test"
+  ],
+  "resolution": "A release introduced a memory leak in profile serialization. Rollback stopped the growth and restored stability.",
+  "postmortem": [
+    "More memory only delayed OOM kills.",
+    "Redis clearing did not change heap growth."
+  ],
+  "tags": [
+    "memory leak",
+    "deployment",
+    "OOM"
+  ]
+}

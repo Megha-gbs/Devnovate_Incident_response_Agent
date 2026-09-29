@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-019",
+  "incident": "Expired internal service certificate",
+  "service": "inventory",
+  "severity": "high",
+  "symptoms": [
+    "inventory service could not call catalog service",
+    "TLS verification failed",
+    "failure began after certificate expiry date"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "An internal certificate renewal job failed silently.",
+  "failed_attempts": [
+    "Restarted inventory pods",
+    "Changed service timeout",
+    "Disabled retries"
+  ],
+  "successful_steps": [
+    "Confirmed certificate expiry",
+    "Renewed the certificate",
+    "Added renewal-job failure alerting"
+  ],
+  "resolution": "A failed certificate renewal job left an internal TLS certificate expired. Renewal restored service communication.",
+  "postmortem": [
+    "Restarts loaded the same expired certificate.",
+    "Timeout changes were unrelated to TLS verification."
+  ],
+  "tags": [
+    "expired certificate",
+    "certificate renewal",
+    "TLS"
+  ]
+}

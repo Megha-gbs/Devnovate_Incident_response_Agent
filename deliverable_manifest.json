@@ -1,0 +1,7 @@
+{
+  "role": "Dataset + Evaluation",
+  "incident_count": 30,
+  "evaluation_scenario_count": 8,
+  "standalone": true,
+  "requires_team_repo": false
+}

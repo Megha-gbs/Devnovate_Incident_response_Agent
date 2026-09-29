@@ -1,0 +1,20 @@
+{
+  "id": "memory-leak",
+  "name": "Memory leak",
+  "title": "notifications-worker memory climbing toward OOM",
+  "description": "Worker RSS grows linearly after deploy 1.9.0; restarts temporarily help.",
+  "severity": "HIGH",
+  "priority": "P2",
+  "category": "reliability",
+  "affected_service": "notifications-worker",
+  "affected_resources": [
+    "notifications-worker"
+  ],
+  "alert": {
+    "name": "WorkerMemoryLeakSuspect",
+    "message": "RSS grown 1.2GB in 45 minutes",
+    "source": "prometheus-alertmanager",
+    "severity": "HIGH",
+    "service": "notifications-worker"
+  }
+}

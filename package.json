@@ -1,0 +1,19 @@
+{
+  "name": "opsmind-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OPSMIND — Incident Intelligence Platform (Frontend UI & Incident Response Agent)",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "lint:frontend": "npm --prefix frontend run lint",
+    "dev:backend": "python -m uvicorn app.main:app --app-dir backend --reload --port 8000",
+    "demo:agent": "python demo.py",
+    "eval:agent": "python evaluation/run_eval.py",
+    "test:frontend": "node frontend/scripts/test-routes.mjs",
+    "test:unit": "pytest tests/",
+    "test:backend": "pytest backend/tests/",
+    "test:e2e": "python scripts/smoke_test.py",
+    "test:all": "pytest tests/ && pytest backend/tests/ && python scripts/smoke_test.py"
+  }
+}

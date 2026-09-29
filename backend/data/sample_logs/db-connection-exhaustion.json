@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2026-09-28T12:02:00+00:00",
+    "service": "orders-api",
+    "level": "ERROR",
+    "message": "could not get connection from pool after 5s"
+  },
+  {
+    "timestamp": "2026-09-28T12:03:00+00:00",
+    "service": "orders-db",
+    "level": "FATAL",
+    "message": "remaining connection slots are reserved"
+  },
+  {
+    "timestamp": "2026-09-28T12:05:00+00:00",
+    "service": "orders-api",
+    "level": "WARN",
+    "message": "thread pool waiting on datasource"
+  },
+  {
+    "timestamp": "2026-09-28T12:07:00+00:00",
+    "service": "orders-api",
+    "level": "ERROR",
+    "message": "GET /orders timed out"
+  },
+  {
+    "timestamp": "2026-09-28T12:09:00+00:00",
+    "service": "deploy-bot",
+    "level": "INFO",
+    "message": "scaled orders-api from 3 to 6 replicas"
+  }
+]

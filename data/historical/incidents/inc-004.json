@@ -1,0 +1,33 @@
+{
+  "incident_id": "INC-004",
+  "incident": "Reporting jobs consume all database connections",
+  "service": "reporting",
+  "severity": "medium",
+  "symptoms": [
+    "interactive reports became slow",
+    "scheduled jobs held many DB connections",
+    "connection wait time spiked during batch start"
+  ],
+  "recent_changes": "See root-cause context; synthetic historical incident.",
+  "root_cause": "A new reporting job opened many concurrent database sessions and did not cap concurrency.",
+  "failed_attempts": [
+    "Restarted reporting workers",
+    "Increased web request timeout",
+    "Scaled the reporting service"
+  ],
+  "successful_steps": [
+    "Capped reporting job concurrency at 5",
+    "Killed only the runaway batch workers",
+    "Added DB connection usage monitoring"
+  ],
+  "resolution": "A reporting batch exceeded safe DB connection concurrency. Limiting worker concurrency released enough connections for interactive traffic.",
+  "postmortem": [
+    "Scaling reporting workers increased DB connection usage.",
+    "Timeout increases only hid the underlying contention."
+  ],
+  "tags": [
+    "DB connection exhaustion",
+    "batch workload",
+    "concurrency"
+  ]
+}
