@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     )
 
     groq_api_key: str = ""
-    groq_model: str = "llama-3.3-70b-versatile"
+    groq_model: str = "openai/gpt-oss-120b"
 
     hindsight_api_key: str = ""
     hindsight_base_url: str = "https://api.hindsight.vectorize.io"

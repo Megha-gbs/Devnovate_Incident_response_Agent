@@ -31,11 +31,10 @@ def get_hindsight_client() -> Hindsight:
     if not current_api_key:
         raise ValueError("HINDSIGHT_API_KEY environment variable is not configured.")
 
-    _client_instance = Hindsight(
+    return Hindsight(
         base_url=current_base_url,
         api_key=current_api_key
     )
-    return _client_instance
 
 
 def close_hindsight_client() -> None:
