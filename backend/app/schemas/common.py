@@ -64,10 +64,12 @@ ALLOWED_TRANSITIONS: dict[IncidentStatus, set[IncidentStatus]] = {
         IncidentStatus.ACKNOWLEDGED,
         IncidentStatus.INVESTIGATING,
         IncidentStatus.ESCALATED,
+        IncidentStatus.RESOLVED,
     },
     IncidentStatus.ACKNOWLEDGED: {
         IncidentStatus.INVESTIGATING,
         IncidentStatus.ESCALATED,
+        IncidentStatus.RESOLVED,
     },
     IncidentStatus.INVESTIGATING: {
         IncidentStatus.ANALYZING,

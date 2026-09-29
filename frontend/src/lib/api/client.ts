@@ -61,7 +61,12 @@ export async function baseRequest<T>(
     );
   }
 
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  let normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  if (baseUrl.endsWith('/api/v1') && normalizedPath.startsWith('/api/v1/')) {
+    normalizedPath = normalizedPath.slice(7);
+  } else if (baseUrl.endsWith('/api') && normalizedPath.startsWith('/api/')) {
+    normalizedPath = normalizedPath.slice(4);
+  }
   const url = `${baseUrl}${normalizedPath}`;
 
   let res: Response;
@@ -85,12 +90,19 @@ export async function baseRequest<T>(
 
   if (!res.ok) {
     let message = res.statusText || 'An unexpected error occurred.';
+    let hasCustomMessage = false;
     try {
       const body = await res.text();
       if (body) {
         try {
-          const json = JSON.parse(body) as { detail?: string; message?: string };
-          message = json.detail ?? json.message ?? body;
+          const json = JSON.parse(body) as { detail?: string; message?: string; error?: string };
+          const candidate = json.error ?? json.detail ?? json.message;
+          if (candidate) {
+            message = candidate;
+            hasCustomMessage = true;
+          } else {
+            message = body;
+          }
         } catch {
           message = body;
         }
@@ -99,7 +111,7 @@ export async function baseRequest<T>(
       // ignore body-read errors
     }
 
-    if (res.status === 404) {
+    if (res.status === 404 && !hasCustomMessage) {
       message = `Backend endpoint 404: "${normalizedPath}" not found on ${baseUrl}.`;
     }
 

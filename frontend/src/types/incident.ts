@@ -20,6 +20,12 @@ export interface Resolution {
   summary: string;
   resolvedBy: string;
   resolvedAt: string;
+  rootCause?: string;
+  root_cause?: string;
+  resolution?: string;
+  remediation?: string;
+  resolved_by?: string;
+  resolved_at?: string;
 }
 
 export interface Post_Mortem {

@@ -27,18 +27,22 @@ class IncidentCreate(BaseModel):
     @classmethod
     def normalize_aliases(cls, values: Any) -> Any:
         if isinstance(values, dict):
-            # Normalize service -> affected_service
-            if "service" in values and not values.get("affected_service"):
-                values["affected_service"] = values["service"]
-            elif "affected_service" in values and not values.get("service"):
-                values["service"] = values["affected_service"]
+            # Normalize service -> affected_service / affectedService
+            service_val = values.get("service") or values.get("affected_service") or values.get("affectedService")
+            if service_val:
+                values["service"] = service_val
+                values["affected_service"] = service_val
 
             # Normalize symptoms -> description
-            if "symptoms" in values and not values.get("description"):
-                s = values["symptoms"]
-                values["description"] = ", ".join(s) if isinstance(s, list) else str(s)
-            elif "description" in values and not values.get("symptoms"):
-                values["symptoms"] = values["description"]
+            symptoms_val = values.get("symptoms") or values.get("description")
+            if symptoms_val:
+                values["symptoms"] = symptoms_val
+                values["description"] = ", ".join(symptoms_val) if isinstance(symptoms_val, list) else str(symptoms_val)
+
+            # Normalize logs / diagnostic_logs / diagnosticLogs
+            logs_val = values.get("logs") or values.get("diagnostic_logs") or values.get("diagnosticLogs")
+            if logs_val:
+                values["logs"] = logs_val
 
             # Normalize severity string (P1, P2, P3, P4 or CRITICAL, etc.)
             sev = values.get("severity")
@@ -177,7 +181,11 @@ class IncidentListItem(BaseModel):
 
 class ResolveRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
-    summary: str = Field(default="", max_length=4000)
+    summary: Optional[str] = Field(default="", max_length=4000)
+    root_cause: Optional[str] = Field(default=None, max_length=4000)
+    rootCause: Optional[str] = Field(default=None, max_length=4000)
+    resolution: Optional[str] = Field(default=None, max_length=4000)
+    remediation: Optional[str] = Field(default=None, max_length=4000)
     resolvedBy: Optional[str] = "Lead SRE"
     resolved_by: Optional[str] = None
     escalate: bool = False
@@ -186,9 +194,23 @@ class ResolveRequest(BaseModel):
     @classmethod
     def normalize_fields(cls, values: Any) -> Any:
         if isinstance(values, dict):
+            rc = values.get("root_cause") or values.get("rootCause") or ""
+            values["root_cause"] = rc
+            values["rootCause"] = rc
+
+            res = values.get("resolution") or values.get("remediation") or values.get("summary") or ""
+            values["resolution"] = res
+            values["remediation"] = res
+
             rb = values.get("resolvedBy") or values.get("resolved_by") or "Lead SRE"
             values["resolvedBy"] = rb
             values["resolved_by"] = rb
+
+            if not values.get("summary"):
+                if rc and res:
+                    values["summary"] = f"Root Cause: {rc}\n\nResolution: {res}"
+                else:
+                    values["summary"] = res or rc or "Incident resolved successfully."
         return values
 
 

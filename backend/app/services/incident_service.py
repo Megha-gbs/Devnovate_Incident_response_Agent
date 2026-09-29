@@ -84,9 +84,15 @@ def incident_to_out(incident: Incident, include_timeline: bool = True) -> Incide
     if incident.resolution_summary or incident.status == "RESOLVED":
         resolution_data = {
             "incidentId": incident.id,
+            "rootCause": incident.suspected_root_cause or "",
+            "root_cause": incident.suspected_root_cause or "",
+            "resolution": incident.resolution_summary or "Incident resolved successfully.",
+            "remediation": incident.resolution_summary or "Incident resolved successfully.",
             "summary": incident.resolution_summary or "Incident resolved successfully.",
             "resolvedBy": incident.resolved_by or "Lead SRE",
+            "resolved_by": incident.resolved_by or "Lead SRE",
             "resolvedAt": _iso(incident.resolved_at or incident.updated_at),
+            "resolved_at": _iso(incident.resolved_at or incident.updated_at),
         }
 
     return IncidentOut(
@@ -130,6 +136,7 @@ def incident_to_out(incident: Incident, include_timeline: bool = True) -> Incide
 
 class IncidentService:
     def get(self, db: Session, incident_id: str) -> Incident:
+        # 1. Exact match
         incident = db.scalar(
             select(Incident)
             .where(Incident.id == incident_id)
@@ -138,9 +145,35 @@ class IncidentService:
                 selectinload(Incident.timeline),
             )
         )
-        if not incident:
-            raise NotFoundError(f"Incident {incident_id} not found")
-        return incident
+        if incident:
+            return incident
+
+        # 2. Normalized candidate match (e.g. "23" -> "INC-023", "inc-023" -> "INC-023")
+        norm = str(incident_id).strip()
+        candidates = [norm.upper()]
+        if norm.isdigit():
+            candidates.append(f"INC-{int(norm):03d}")
+            candidates.append(f"INC-{int(norm)}")
+        elif norm.upper().startswith("INC-"):
+            parts = norm.upper().split("-", 1)
+            if len(parts) == 2 and parts[1].isdigit():
+                candidates.append(f"INC-{int(parts[1]):03d}")
+                candidates.append(f"INC-{int(parts[1])}")
+
+        for cand in candidates:
+            if cand != incident_id:
+                incident = db.scalar(
+                    select(Incident)
+                    .where(Incident.id == cand)
+                    .options(
+                        selectinload(Incident.actions),
+                        selectinload(Incident.timeline),
+                    )
+                )
+                if incident:
+                    return incident
+
+        raise NotFoundError(f"Incident {incident_id} not found")
 
     def list_incidents(self, db: Session, status: str | None = None) -> list[Incident]:
         stmt = (
@@ -387,10 +420,20 @@ class IncidentService:
         incident_id: str,
         summary: str,
         resolved_by: str = "Lead SRE",
+        root_cause: Optional[str] = None,
+        resolution: Optional[str] = None,
     ) -> Incident:
         incident = self.get(db, incident_id)
         incident.status = "RESOLVED"
-        incident.resolution_summary = summary or incident.resolution_summary or "Incident resolved successfully."
+
+        if root_cause:
+            incident.suspected_root_cause = root_cause
+
+        effective_summary = resolution or summary or incident.resolution_summary or "Incident resolved successfully."
+        if root_cause and "Root Cause:" not in effective_summary:
+            effective_summary = f"Root Cause: {root_cause}\n\nResolution: {effective_summary}"
+
+        incident.resolution_summary = effective_summary
         incident.resolved_by = resolved_by
         incident.resolved_at = utc_now()
         incident.updated_at = utc_now()
@@ -400,11 +443,15 @@ class IncidentService:
             incident,
             event="Incident resolved",
             actor=resolved_by,
-            result=incident.resolution_summary,
-            extra={"resolved_by": resolved_by},
+            result=incident.resolution_summary[:120],
+            extra={
+                "resolved_by": resolved_by,
+                "root_cause": root_cause or incident.suspected_root_cause,
+                "resolution": resolution or incident.resolution_summary,
+            },
         )
         db.commit()
-        return self.get(db, incident_id)
+        return self.get(db, incident.id)
 
     def save_postmortem(
         self,

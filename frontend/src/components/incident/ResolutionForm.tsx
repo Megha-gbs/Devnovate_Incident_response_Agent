@@ -51,7 +51,12 @@ export default function ResolutionForm({ incident, onResolved }: ResolutionFormP
       const fullSummary = `Root Cause: ${rootCause.trim()}\n\nResolution: ${summary.trim()}`;
       const updated = await resolveIncident(incident.id, {
         summary: fullSummary,
+        rootCause: rootCause.trim(),
+        root_cause: rootCause.trim(),
+        resolution: summary.trim(),
+        remediation: summary.trim(),
         resolvedBy: resolvedBy.trim(),
+        resolved_by: resolvedBy.trim(),
       });
       onResolved(updated);
     } catch (err) {
