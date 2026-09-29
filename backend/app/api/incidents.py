@@ -44,7 +44,7 @@ def list_incidents(
             incident_id=row.id,
             id=row.id,
             title=row.title,
-            severity=row.severity,
+            severity="P1" if (row.severity == "CRITICAL" or row.priority == "P1") else ("P2" if row.severity == "HIGH" else ("P3" if row.severity == "MEDIUM" else ("P4" if row.severity == "LOW" else row.severity))),
             status="resolved" if row.status == "RESOLVED" else "active",
             affected_service=row.affected_service,
             service=row.affected_service,
@@ -52,7 +52,7 @@ def list_incidents(
             updated_at=row.updated_at.isoformat() if row.updated_at else "",
             timestamp=row.created_at.isoformat() if row.created_at else "",
             category=row.category,
-            priority=row.priority,
+            priority="P1" if (row.severity == "CRITICAL" or row.priority == "P1") else (row.priority or "P2"),
             symptoms=row.symptoms or row.description or "",
         )
         for row in rows

@@ -20,9 +20,11 @@ export function useIncidents(): UseIncidentsResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ApiError | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [mockActive, setMockActive] = useState<boolean>(true);
+  const [mockActive, setMockActive] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? isMockMode() : false,
+  );
 
-  // Sync mock state safely after mount
+  // Sync mock state and listen for incident updates & window focus
   useEffect(() => {
     setMockActive(isMockMode());
 
@@ -31,8 +33,29 @@ export function useIncidents(): UseIncidentsResult {
       setRetryCount((c) => c + 1);
     };
 
+    const handleIncidentUpdate = () => {
+      setRetryCount((c) => c + 1);
+    };
+
+    const handleFocus = () => {
+      setRetryCount((c) => c + 1);
+    };
+
+    // Auto-poll every 12 seconds to keep live dashboard fresh
+    const pollInterval = setInterval(() => {
+      setRetryCount((c) => c + 1);
+    }, 12000);
+
     window.addEventListener('opsmind:mode_changed', handleModeChange);
-    return () => window.removeEventListener('opsmind:mode_changed', handleModeChange);
+    window.addEventListener('opsmind:incident_updated', handleIncidentUpdate);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(pollInterval);
+      window.removeEventListener('opsmind:mode_changed', handleModeChange);
+      window.removeEventListener('opsmind:incident_updated', handleIncidentUpdate);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   useEffect(() => {

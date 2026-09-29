@@ -21,7 +21,9 @@ export function useIncident(id: string): UseIncidentResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ApiError | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [mockActive, setMockActive] = useState<boolean>(true);
+  const [mockActive, setMockActive] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? isMockMode() : false,
+  );
 
   useEffect(() => {
     setMockActive(isMockMode());
@@ -31,8 +33,16 @@ export function useIncident(id: string): UseIncidentResult {
       setRetryCount((c) => c + 1);
     };
 
+    const handleIncidentUpdate = () => {
+      setRetryCount((c) => c + 1);
+    };
+
     window.addEventListener('opsmind:mode_changed', handleModeChange);
-    return () => window.removeEventListener('opsmind:mode_changed', handleModeChange);
+    window.addEventListener('opsmind:incident_updated', handleIncidentUpdate);
+    return () => {
+      window.removeEventListener('opsmind:mode_changed', handleModeChange);
+      window.removeEventListener('opsmind:incident_updated', handleIncidentUpdate);
+    };
   }, []);
 
   useEffect(() => {

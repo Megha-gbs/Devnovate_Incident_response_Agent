@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { analyzeIncident, updateStep } from '@/lib/api/analysis';
 import { isMockMode } from '@/lib/api/client';
 import { mockInvestigation } from '@/lib/mock';
@@ -30,6 +30,13 @@ export function useInvestigation(
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
   const mock = isMockMode();
+
+  // Sync investigation whenever parent finishes loading incident details
+  useEffect(() => {
+    if (initialInvestigation) {
+      setInvestigation(initialInvestigation);
+    }
+  }, [initialInvestigation]);
 
   const analyze = useCallback(async () => {
     setAnalyzing(true);

@@ -102,8 +102,8 @@ def incident_to_out(incident: Incident, include_timeline: bool = True) -> Incide
         description=incident.description,
         symptoms=symptoms_str,
         source=incident.source,
-        severity=incident.severity,
-        priority=incident.priority,
+        severity="P1" if (incident.severity in ("CRITICAL", "P1") or incident.priority in ("P1", "CRITICAL")) else ("P2" if incident.severity in ("HIGH", "P2") else ("P3" if incident.severity in ("MEDIUM", "P3") else ("P4" if incident.severity in ("LOW", "P4") else incident.severity))),
+        priority="P1" if (incident.severity in ("CRITICAL", "P1") or incident.priority in ("P1", "CRITICAL")) else (incident.priority or "P2"),
         category=incident.category,
         status=incident.status,
         created_at=_iso(incident.created_at),
@@ -450,6 +450,38 @@ class IncidentService:
                 "resolution": resolution or incident.resolution_summary,
             },
         )
+
+        # Auto-retain resolution into Hindsight memory so future incidents can resolve from it
+        try:
+            from app.hindsight.memory import retain_postmortem
+            from app.core.config import get_settings
+            retain_postmortem(
+                incident={
+                    "id": incident.id,
+                    "service": incident.affected_service or "system",
+                    "title": incident.title,
+                    "symptoms": incident.symptoms,
+                },
+                postmortem={
+                    "root_cause": root_cause or incident.suspected_root_cause or "Investigated and identified",
+                    "resolution": resolution or incident.resolution_summary,
+                    "failed_attempts": "Avoid repeating initial unverified actions",
+                    "lessons_learned": f"Resolved by {resolved_by}: {incident.resolution_summary}",
+                    "post_mortem": incident.resolution_summary,
+                },
+                bank_id=get_settings().hindsight_bank_id,
+            )
+            self.add_timeline(
+                db,
+                incident,
+                event="Knowledge retained in organizational memory",
+                actor="ai",
+                result=f"Retained resolution into memory bank {get_settings().hindsight_bank_id}",
+                extra={"bank_id": get_settings().hindsight_bank_id},
+            )
+        except Exception as e:
+            logger.warning("Auto-retention on resolve notice: %s", e)
+
         db.commit()
         return self.get(db, incident.id)
 

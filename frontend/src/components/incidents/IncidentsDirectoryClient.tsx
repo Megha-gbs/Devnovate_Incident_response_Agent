@@ -46,7 +46,15 @@ export default function IncidentsDirectoryClient() {
   const distinctServices = Array.from(new Set(incidents.map((i) => i.service)));
 
   const filtered = incidents.filter((inc) => {
-    if (severityFilter !== 'ALL' && inc.severity !== severityFilter) return false;
+    if (severityFilter !== 'ALL') {
+      const isSevMatch =
+        inc.severity === severityFilter ||
+        (severityFilter === 'P1' && ((inc.severity as string)?.toUpperCase() === 'CRITICAL' || inc.priority === 'P1')) ||
+        (severityFilter === 'P2' && ((inc.severity as string)?.toUpperCase() === 'HIGH' || inc.priority === 'P2')) ||
+        (severityFilter === 'P3' && ((inc.severity as string)?.toUpperCase() === 'MEDIUM' || inc.priority === 'P3')) ||
+        (severityFilter === 'P4' && ((inc.severity as string)?.toUpperCase() === 'LOW' || inc.priority === 'P4'));
+      if (!isSevMatch) return false;
+    }
     if (statusFilter !== 'ALL' && inc.status !== statusFilter) return false;
     if (serviceFilter !== 'ALL' && inc.service !== serviceFilter) return false;
     if (search.trim()) {

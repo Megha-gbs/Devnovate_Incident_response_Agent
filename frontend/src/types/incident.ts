@@ -5,6 +5,7 @@ export interface Incident {
   title: string;
   service: string;
   severity: Severity;
+  priority?: string;
   symptoms: string;
   logs: string;
   timestamp: string; // ISO 8601

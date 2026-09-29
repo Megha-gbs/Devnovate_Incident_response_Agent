@@ -12,12 +12,32 @@ import type {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function normalizeIncident(raw: any): Incident {
   if (!raw || typeof raw !== 'object') return raw;
+
+  // Normalize severity and priority so P1/CRITICAL are always recognized as P1
+  const rawSev = (raw.severity || '').toString().toUpperCase();
+  const rawPrio = (raw.priority || '').toString().toUpperCase();
+
+  let sev: 'P1' | 'P2' | 'P3' | 'P4' = 'P2';
+  if (rawSev === 'CRITICAL' || rawSev === 'P1' || rawPrio === 'P1' || rawPrio === 'CRITICAL') {
+    sev = 'P1';
+  } else if (rawSev === 'HIGH' || rawSev === 'P2' || rawPrio === 'P2' || rawPrio === 'HIGH') {
+    sev = 'P2';
+  } else if (rawSev === 'MEDIUM' || rawSev === 'P3' || rawPrio === 'P3' || rawPrio === 'MEDIUM') {
+    sev = 'P3';
+  } else if (rawSev === 'LOW' || rawSev === 'P4' || rawPrio === 'P4' || rawPrio === 'LOW') {
+    sev = 'P4';
+  }
+
+  const rawStatus = (raw.status || 'active').toString().toUpperCase();
+  const normalizedStatus = rawStatus === 'RESOLVED' ? 'resolved' : 'active';
+
   return {
     id: raw.id || raw.incident_id || 'INC-UNKNOWN',
     title: raw.title || 'Untitled Incident',
     service: raw.service || raw.affected_service || 'Core Service',
-    severity: (raw.severity?.toUpperCase() || 'P2'),
-    status: (raw.status?.toUpperCase() === 'RESOLVED' || raw.status === 'resolved') ? 'resolved' : 'active',
+    severity: sev as 'P1' | 'P2' | 'P3' | 'P4',
+    priority: raw.priority || sev,
+    status: normalizedStatus,
     symptoms: raw.symptoms || raw.description || 'Symptoms recorded by system',
     logs: raw.logs || (raw.evidence ? JSON.stringify(raw.evidence, null, 2) : ''),
     timestamp: raw.timestamp || raw.created_at || new Date().toISOString(),
@@ -97,7 +117,11 @@ export async function createIncident(payload: CreateIncidentPayload): Promise<In
     method: 'POST',
     body: JSON.stringify(body),
   });
-  return normalizeIncident(raw);
+  const normalized = normalizeIncident(raw);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('opsmind:incident_updated'));
+  }
+  return normalized;
 }
 
 /**
@@ -130,6 +154,9 @@ export async function resolveIncident(
     if (found) {
       found.status = 'resolved';
       found.resolution = resObj;
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('opsmind:incident_updated'));
+      }
       return { ...found };
     }
     const fallback: Incident = {
@@ -144,6 +171,9 @@ export async function resolveIncident(
       resolution: resObj,
     };
     mockIncidents.unshift(fallback);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('opsmind:incident_updated'));
+    }
     return fallback;
   }
 
@@ -162,7 +192,11 @@ export async function resolveIncident(
     method: 'POST',
     body: JSON.stringify(body),
   });
-  return normalizeIncident(raw);
+  const normalized = normalizeIncident(raw);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('opsmind:incident_updated'));
+  }
+  return normalized;
 }
 
 /**

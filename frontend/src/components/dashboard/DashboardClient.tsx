@@ -105,21 +105,27 @@ export default function DashboardClient() {
     );
   }
 
+  const isP1 = (i: typeof incidents[0]) =>
+    i.severity === 'P1' ||
+    (i.severity as string)?.toUpperCase() === 'CRITICAL' ||
+    i.priority === 'P1' ||
+    i.priority === 'CRITICAL';
+
   const activeIncidents = incidents.filter((i) => i.status === 'active');
   const resolvedIncidents = incidents.filter((i) => i.status === 'resolved');
-  const criticalIncidents = incidents.filter((i) => i.severity === 'P1' && i.status === 'active');
+  const criticalIncidents = incidents.filter((i) => isP1(i) && i.status === 'active');
   const investigatingIncidents = incidents.filter((i) => i.status === 'active' && !!i.investigation);
 
   // Severity Distribution counts
-  const p1Count = incidents.filter((i) => i.severity === 'P1').length;
-  const p2Count = incidents.filter((i) => i.severity === 'P2').length;
-  const p3Count = incidents.filter((i) => i.severity === 'P3').length;
-  const p4Count = incidents.filter((i) => i.severity === 'P4').length;
+  const p1Count = incidents.filter(isP1).length;
+  const p2Count = incidents.filter((i) => i.severity === 'P2' || (i.severity as string)?.toUpperCase() === 'HIGH').length;
+  const p3Count = incidents.filter((i) => i.severity === 'P3' || (i.severity as string)?.toUpperCase() === 'MEDIUM').length;
+  const p4Count = incidents.filter((i) => i.severity === 'P4' || (i.severity as string)?.toUpperCase() === 'LOW').length;
   const total = incidents.length || 1;
 
   // Filter and sort incidents
   const filtered = incidents.filter((inc) => {
-    if (filter === 'critical') return inc.severity === 'P1' && inc.status === 'active';
+    if (filter === 'critical') return isP1(inc) && inc.status === 'active';
     if (filter === 'investigating') return inc.status === 'active' && !!inc.investigation;
     if (filter === 'resolved') return inc.status === 'resolved';
     return true;
