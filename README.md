@@ -10,7 +10,7 @@ incident report.
 
 ## Live Application
 
-**OPSMIND:** https://devnovate-incident-response-agent.vercel.app/
+**OPSMIND:** [https://devnovate-incident-response-agent.vercel.app/](https://devnovate-incident-response-agent.vercel.app/)
 
 ## Repository
 
