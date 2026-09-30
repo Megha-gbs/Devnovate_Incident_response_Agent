@@ -2,7 +2,11 @@ import os
 import atexit
 from typing import Optional
 from dotenv import load_dotenv
-from hindsight_client import Hindsight
+try:
+    from hindsight_client import Hindsight
+except ImportError:
+    Hindsight = None
+
 
 load_dotenv()
 
